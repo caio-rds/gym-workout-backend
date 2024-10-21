@@ -7,6 +7,7 @@ from src.app.utils.custom_exceptions import WorkoutNotFound
 from src.app.utils.validations import to_bson
 
 async def read_workouts(username: str) -> list[WorkoutResponse]:
+
     workouts = await Workout.aggregate(
         [
             {'$match': {'username': username}},
@@ -23,13 +24,17 @@ async def read_workouts(username: str) -> list[WorkoutResponse]:
     if not workouts:
         raise WorkoutNotFound
     for workout in workouts:
+        unique_groups = []
         workout['_id'] = str(workout['_id'])
         for exercise in workout['exercises']:
             exercise['_id'] = str(exercise['_id'])
-
+            if exercise['muscle_group'] not in unique_groups:
+                unique_groups.append(exercise['muscle_group'])
+        workout['exercises_muscle_groups'] = unique_groups
     return workouts
 
 async def read_workout(workout_id: str) -> WorkoutResponse:
+
     workout = await Workout.aggregate(
         [
             {'$match': {'_id': await to_bson(workout_id)}},
@@ -48,7 +53,11 @@ async def read_workout(workout_id: str) -> WorkoutResponse:
     workout = workout[0]
     workout['_id'] = str(workout['_id'])
     for exercise in workout['exercises']:
+        unique_groups = []
         exercise['_id'] = str(exercise['_id'])
+        if exercise['muscle_group'] not in unique_groups:
+            unique_groups.append(exercise['muscle_group'])
+        workout['exercises_muscle_groups'] = unique_groups
     return workout
 
 async def create_workout(workout: WorkoutReq):

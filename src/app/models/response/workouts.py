@@ -18,6 +18,7 @@ class WorkoutResponse(BaseModel):
     _id: str
     username: str
     name: str
+    exercises_muscle_groups: list[str]
     exercises: list[ExerciseResponse]
     created_at: str
     updated_at: str
