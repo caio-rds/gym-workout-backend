@@ -8,6 +8,7 @@ from src.app.schemas.login import TryLogin
 from src.app.schemas.user import CreateUser, ReadUser, UpdatedUser
 from src.app.views.workouts import router as workout_router
 from src.app.views.exercises import router as exercises_router
+from src.app.views.list_exercises import router as list_exercises_router
 from src.app.views.user import router as user_router
 from src.app.views.login import router as login_router
 import logging
@@ -31,6 +32,7 @@ async def lifespan(app_: FastAPI):
         ]
     )
     logging.info('Beanie initialized with MongoDB')
+    app_.include_router(list_exercises_router, prefix='/exercises', tags=['exercises'])
     app_.include_router(workout_router, prefix='/workouts', tags=['workouts'])
     app_.include_router(exercises_router, prefix='/workouts/exercises', tags=['exercises'])
     app_.include_router(user_router, prefix='/user', tags=['users'])

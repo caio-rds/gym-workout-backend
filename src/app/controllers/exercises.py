@@ -25,7 +25,8 @@ async def add_exercise(workout_id: str, exercise: ExerciseReq):
         sets=exercise.sets,
         reps=exercise.reps,
         weight=exercise.weight,
-        workout_id=workout_id
+        workout_id=workout_id,
+        exercise_id=exercise.exercise_id
     ).insert()
     return inserted
 

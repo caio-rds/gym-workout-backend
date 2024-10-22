@@ -7,11 +7,12 @@ from bson import ObjectId
 class Exercise(Document):
     name: str
     muscle_group: str
-    equipment: str
+    equipment: str | list[str]
     description: str
     sets: int
     reps: int
     weight: float | int
+    exercise_id: Indexed(str)
     workout_id: Indexed(str)
     created_at: Optional[str] = datetime.now().isoformat()
     updated_at: Optional[str] = None
@@ -45,7 +46,7 @@ class ExerciseList(Document):
     _id: ObjectId
     name: str
     muscle_group: str
-    equipment: str
+    equipment: str | list[str]
     description: str
 
     class Settings:
