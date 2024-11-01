@@ -33,8 +33,11 @@ class UserNotFound(GenericException):
         super().__init__('User not found', 404)
 
 class UserAlreadyExists(GenericException):
-    def __init__(self):
-        super().__init__('User already exists', 409)
+    def __init__(self, message: dict):
+        if message.get('username'):
+            super().__init__(f"Username already in use: {message.get('username')}", 400)
+        if message.get('email'):
+            super().__init__(f"Email already in use: {message.get('email')}", 400)
 
 
 class CodeNotFound(GenericException):
@@ -73,3 +76,31 @@ class InvalidTokenSignature(GenericException):
 class BearerNotFound(GenericException):
     def __init__(self):
         super().__init__('Bearer token not found', 401)
+
+class InvalidPhoneFormat(GenericException):
+    def __init__(self):
+        super().__init__('Invalid phone number format', 400)
+
+class InvalidEmailFormat(GenericException):
+    def __init__(self):
+        super().__init__('Invalid email format', 400)
+
+class InvalidName(GenericException):
+    def __init__(self):
+        super().__init__('Invalid full name format', 400)
+
+class InvalidWeight(GenericException):
+    def __init__(self):
+        super().__init__('Weight must be greater than 0', 400)
+
+class InvalidHeight(GenericException):
+    def __init__(self):
+        super().__init__('Height must be greater than 0', 400)
+
+class InvalidBirthDate(GenericException):
+    def __init__(self):
+        super().__init__('Birth date must be less than today', 400)
+
+class InvalidDateFormat(GenericException):
+    def __init__(self):
+        super().__init__('Invalid date format', 400)

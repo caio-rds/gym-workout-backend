@@ -1,6 +1,0 @@
-- [x] Add Muscle Groups to workouts, can be in the database or hardcoded
-- [ ] Add user new fields: weight, height, age
-- [ ] Add new function to calculate BMR
-- [ ] Add new function to calculate TDEE
-- [ ] Add new function to calculate BMI
-- [ ] User preferences

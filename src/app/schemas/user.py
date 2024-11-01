@@ -1,55 +1,25 @@
 import datetime
-
+from typing import Optional
 from beanie import Document, Indexed
-import re
-from src.app.utils.validations import validate_password
-from fastapi import HTTPException
 import bson
 
-class CreateUser(Document):
+class User(Document):
+    _id: bson.ObjectId
     username: Indexed(str, unique=True)
     email: Indexed(str, unique=True)
     password: str
     name: str
+    gender: str
     phone: str
-
-    def __init__(self, **data):
-        super().__init__(**data)
-        try:
-            validate_password(self.password)
-        except ValueError as e:
-            raise HTTPException(status_code=400, detail=str(e))
-        if re.search(r"\(\d{2}\)\s+\d{5}-\d{4}", self.phone) is None:
-            raise HTTPException(status_code=400, detail="Invalid phone number format")
-        if re.search(r'^[a-z0-9]+[._]?[a-z0-9]+@\w+[.]\w{2,3}$', self.email) is None:
-            raise HTTPException(status_code=400, detail="Invalid email format")
-        if re.search(r"^[A-Za-záàâãéèêíìóòôõúùûüçÇ\-\s]+$", self.name) is None:
-            raise HTTPException(status_code=400, detail="Invalid full name format")
-
-    class Settings:
-        name = "user"
-
-class ReadUser(Document):
-    _id: bson.ObjectId
-    username: str
-    email: str
-    name: str
-    phone: str
-
-    class Settings:
-        name = "user"
-
-    @property
-    def id(self):
-        return self._id
-
-
-class UpdatedUser(Document):
-    username: str
-    email: str
-    name: str
-    phone: str
-    updated_at: datetime.datetime
+    weight: float | int
+    height: int
+    birth_date: str
+    activity_level: float
+    bmr: float | int = None
+    tdee: float | int = None
+    bmi: float | int = None
+    created_at: Optional[datetime.datetime] = None
+    updated_at: Optional[datetime.datetime] = None
 
     class Settings:
         name = "user"

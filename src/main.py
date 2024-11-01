@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from src.app.schemas.workouts import Workout, ExerciseList, Exercise
 from src.app.schemas.login import TryLogin
-from src.app.schemas.user import CreateUser, ReadUser, UpdatedUser
+from src.app.schemas.user import User
 from src.app.views.workouts import router as workout_router
 from src.app.views.exercises import router as exercises_router
 from src.app.views.list_exercises import router as list_exercises_router
@@ -28,7 +28,7 @@ async def lifespan(app_: FastAPI):
     await init_beanie(
         database=client.get_database('gym'),
         document_models=[
-            CreateUser,ReadUser, UpdatedUser, TryLogin, Workout, ExerciseList, Exercise
+            User, TryLogin, Workout, ExerciseList, Exercise
         ]
     )
     logging.info('Beanie initialized with MongoDB')
